@@ -1,0 +1,42 @@
+.stickVert {
+    width: 1px;
+    height: 40px;
+    box-sizing: border-box;
+    margin: 0px 32px;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.favBttn {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    transition-timing-function: ease;
+    transition-duration: 0.2s;
+    transition-property: all;
+    z-index: 1;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+
+.favBttn:hover{
+    background-color: rgb(247, 247, 245);
+    border-color: rgb(233, 233, 233);
+}
+
+
+.favBttn svg{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
