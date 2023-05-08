@@ -2,35 +2,13 @@ import {makeAutoObservable} from 'mobx';
 
 export default class ApartamentStore {
     constructor() {
-        // this._types = [
-        //     'Однокомнатная',
-        //     'Двухкомнатная'
-        // ]
+        this._types = [
+            {id:0, title: 'Однокомнатная'},
+            {id:0,title:'Двухкомнатная'}
+        ]
         this._districts = [
             {id: 1, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
             {id: 2, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 3, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 4, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 1, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 2, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 3, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 4, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 1, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 2, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 3, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 4, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 1, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 2, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 3, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 4, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 1, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 2, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 3, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 4, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 1, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 2, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-            {id: 3, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 4, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
         ]
         this._apartaments = [
             {id: 1, type: 'Студия', price: '123321323', districtDistrictId: 1, info: 
@@ -46,7 +24,6 @@ export default class ApartamentStore {
             {id: 8, title: 'Корпус', description: '1.1'},
             ]}
         ]
-        this._selectedType=""
         makeAutoObservable(this)
     }
 
@@ -58,8 +35,8 @@ export default class ApartamentStore {
         this._districts = districts
     }
 
-    setSelectedType(type){
-        this._selectedType = type
+    setTypes(types){
+        this._types = types
     }
 
     get apartaments() {
@@ -68,7 +45,7 @@ export default class ApartamentStore {
     get districts() {
         return this._districts
     }
-    get selectedType() {
-        return this._selectedType
+    get types() {
+        return this._types
     }
 }
