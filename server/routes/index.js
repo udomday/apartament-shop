@@ -7,7 +7,7 @@ const userRouter = require('./userRouter');
 
 router.use('/user', userRouter)
 router.use('/apartament', apartamentRouter)
-router.use('/apartType', apartamentTypeRouter)
+router.use('/apartype', apartamentTypeRouter)
 router.use('/district', districtRouter)
 
 

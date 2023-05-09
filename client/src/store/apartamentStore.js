@@ -2,14 +2,11 @@ import {makeAutoObservable} from 'mobx';
 
 export default class ApartamentStore {
     constructor() {
-        this._types = [
-            {id:0, title: 'Однокомнатная'},
-            {id:0,title:'Двухкомнатная'}
-        ]
-        this._districts = [
-            {id: 1, title: 'ЖК Внуково', metro: 'Рассказовка', description: 'ПООПОп', },
-            {id: 2, title: 'ЖК Солнцевский', metro: 'Солнцево', description: 'ПООПОп', },
-        ]
+        this._types = []
+
+        this._selectedType = ''
+
+        this._districts = []
         this._apartaments = [
             {id: 1, type: 'Студия', price: '123321323', districtDistrictId: 1, info: 
             [{id: 1, title: 'Площадь', description: '19.87'},
@@ -39,6 +36,10 @@ export default class ApartamentStore {
         this._types = types
     }
 
+    setSelectedType(selectedType){
+        this._selectedType = selectedType
+    }
+
     get apartaments() {
         return this._apartaments
     }
@@ -47,5 +48,8 @@ export default class ApartamentStore {
     }
     get types() {
         return this._types
+    }
+    get selectedType(){
+        return this._selectedType
     }
 }

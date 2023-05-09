@@ -23,7 +23,7 @@ const App = observer(() => {
 
   if(loading){
     return (
-      <Spinner style={{margin: '50%'}} animation="border" role="status">
+      <Spinner style={{}} animation="border" role="status">
       <span className="visually-hidden">Loading...</span>
     </Spinner>
     )

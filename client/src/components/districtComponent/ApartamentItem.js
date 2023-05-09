@@ -4,6 +4,7 @@ import './styles/apartamentItem.css'
 import { useNavigate } from 'react-router-dom';
 import { APARTAMENT_ROUTE } from '../../utils/consts';
 const ApartamentItem = ({apartament}) => {
+    
     const history = useNavigate();
     return( 
         <Col onClick={()=>history(APARTAMENT_ROUTE + '/' + apartament.id)}>

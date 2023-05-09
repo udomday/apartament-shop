@@ -1,10 +1,17 @@
 import { observer } from 'mobx-react-lite';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Context } from '..';
 import { Container, Navbar, Nav, Form, Button } from 'react-bootstrap';
+import { fetchTypes } from '../http/apartamentApi';
 
 const SortBar = observer(() =>{
     const {apartaments} = useContext(Context)
+
+    useEffect(() => {
+      fetchTypes().then(data => apartaments.setTypes(data))
+    }, [])
+
+
     return(
         <Navbar bg="light" expand="lg">
         <Container fluid>
@@ -14,15 +21,15 @@ const SortBar = observer(() =>{
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            {apartaments.apartaments.map((apartament) => 
+            {apartaments.types.map((type) => 
                 <Button 
                   variant="outline-dark" 
                   className='ms-2' 
-                  key ={apartament.id}
-                  active = {apartament.type === apartaments.selectedType}
-                  onClick={() => apartaments.setSelectedType(apartament.type)}
+                  key ={type.id}
+                  active = {type.title === apartaments.selectedType}
+                  onClick={() => apartaments.setSelectedType(type.title)}
                 >
-                  {apartament.type}
+                  {type.title}
                 </Button>
               )}
           </Nav>

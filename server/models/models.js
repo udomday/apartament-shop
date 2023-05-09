@@ -93,7 +93,7 @@ Message.belongsTo(Chat);
 ApartamentType.hasOne(Apartament);
 Apartament.belongsTo(ApartamentType);
 
-District.hasMany(Apartament);
+District.hasMany(Apartament, {as: 'apartaments'});
 Apartament.belongsTo(District)
 
 District.hasMany(DistrictPhotos, {as: 'photos'});

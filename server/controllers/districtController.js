@@ -1,4 +1,4 @@
-const { District, DistrictPhotos } =  require("../models/models");
+const { District, DistrictPhotos, Apartament } =  require("../models/models");
 const ApiError = require("../error/ApiError")
 const uuid = require('uuid')
 const path = require('path')
@@ -37,7 +37,7 @@ class DistrictController {
         const district = await District.findOne(
             {
                 where: {id},
-                include: [{model: DistrictPhotos, as: 'photos'}]
+                include: [{model: DistrictPhotos, as: 'photos'}, {model: Apartament, as: 'apartaments'}]
             }
         )
         return res.json(district)

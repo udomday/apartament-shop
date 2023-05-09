@@ -38,18 +38,31 @@ class ApartamentController {
         }
     }
 
-    async getAll(req, res){
-        const {apartamentTypeId, limit, page} = req.body
-        page = page || 1
-        limit = limit || 9
-        let offset = page * limit - limit
-        let apartaments;
-        if(!apartamentTypeId){
-            apartaments = await Apartament.findAndCountAll(limit, offset);
-        } else{
-            apartaments = await Apartament.findAndCountAll({where:{apartamentTypeId}}, limit, offset);
+    async getAll(req, res, next){
+        try{
+            let {apartamentTypeId, districtId, limit, page} = req.body
+            console.log(req.body)
+            page = page || 1
+            limit = limit || 9
+            let offset = page * limit - limit
+            let apartaments;
+            if(!apartamentTypeId){
+                apartaments = await Apartament.findAll(
+                    {
+                        where:{districtId},
+                        include: [{model: ApartamentInfo, as: 'info'}, {model: ApartamentPhotos, as: 'photos'}]
+                    }, limit, offset);
+            } else{
+                apartaments = await Apartament.findAll(
+                {
+                    where:{apartamentTypeId, districtId},
+                    include: [{model: ApartamentInfo, as: 'info'}, {model: ApartamentPhotos, as: 'photos'}]
+                }, limit, offset);
+            }
+            return res.json(apartaments)
+        }catch(e){
+            return res.json({message: "Нет данных"})
         }
-        return res.json(apartaments)
     }
 
     async getOne(req, res){
