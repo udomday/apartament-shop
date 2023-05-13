@@ -1,7 +1,8 @@
-const { Apartament, ApartamentInfo, ApartamentPhotos } =  require("../models/models");
+const { Apartament, ApartamentInfo, ApartamentPhotos, ApartamentType } =  require("../models/models");
 const ApiError = require("../error/ApiError")
 const uuid = require('uuid')
-const path = require('path')
+const path = require('path');
+const { Sequelize } = require("../db");
 
 class ApartamentController {
     async create(req, res, next){
@@ -40,8 +41,8 @@ class ApartamentController {
 
     async getAll(req, res, next){
         try{
-            let {apartamentTypeId, districtId, limit, page} = req.body
-            console.log(req.body)
+            let {apartamentTypeId, limit, page} = req.body
+            let {districtId} = req.query
             page = page || 1
             limit = limit || 9
             let offset = page * limit - limit
@@ -56,7 +57,11 @@ class ApartamentController {
                 apartaments = await Apartament.findAll(
                 {
                     where:{apartamentTypeId, districtId},
-                    include: [{model: ApartamentInfo, as: 'info'}, {model: ApartamentPhotos, as: 'photos'}]
+                    include: [
+                        {model: ApartamentInfo, as: 'info'}, 
+                        {model: ApartamentPhotos, as: 'photos'},
+                        
+                    ]
                 }, limit, offset);
             }
             return res.json(apartaments)

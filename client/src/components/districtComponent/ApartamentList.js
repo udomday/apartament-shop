@@ -11,21 +11,19 @@ const ApartamentList = observer(() => {
     const [district, setDistrict] = useState()
     const {id} = useParams()
 
-
-
     useEffect(() => {  
-        fetchApartaments(id).then(data => console.log(data))
+        fetchApartaments(id).then(data => setDistrict(data))
     }, [])
 
-    return(
-        <Row xs={{ cols: 1 }}>
-            {
-            apartaments.apartaments.map((apartament => 
-                <ApartamentItem key={apartament.id} apartament = {apartament}/>
-            ))
-            }
-        </Row>
-    )
+    if(district){
+        return(
+            <Row xs={{ cols: 1 }}>
+                {district.map((apartament => 
+                    <ApartamentItem key={apartament.id} apartament = {apartament}/>
+                ))}
+            </Row>
+        )
+    }
 })
 
 export default ApartamentList;

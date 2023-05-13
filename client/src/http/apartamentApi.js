@@ -34,7 +34,8 @@ export const createApartament = async (district) => {
 }
 
 export const fetchApartaments = async (districtId) => {
-    const {data} = await $host.get('api/apartament', {districtId})
+    console.log(districtId)
+    const {data} = await $host.get('api/apartament?districtId=' + districtId)
     return data
 }
 

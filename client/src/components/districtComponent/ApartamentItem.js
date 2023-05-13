@@ -11,7 +11,7 @@ const ApartamentItem = ({apartament}) => {
             <Card style={{cursor: 'pointer', backgroundColor:'rgb(247, 247, 245)', borderColor: 'rgb(247, 247, 245)'}} className='mt-3 d-flex flex-row'>
                 <div style={{width: '15%'}} className='p-2 bd-highlight'>Photo</div>
                 <div style={{width: '85%'}} className='p-2 bd-highlight'>
-                    <h3>{apartament.type}, {apartament.info.find(info => info.title === 'Площадь').description}</h3>
+                    <h3>{apartament.title}, {apartament.info.find(info => info.title === 'Площадь').description}м²</h3>
                     <div style={{width: '100%'}} className='d-flex  mt-2 justify-content-between'>
                         <div style={{width: '30%'}} className='bd-highlight'>
                             <div style={{textAlign: 'left'}}>Стоимость <span style={{float: 'right', fontWeight: 'bold'}}>{apartament.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₽</span></div>
@@ -20,7 +20,7 @@ const ApartamentItem = ({apartament}) => {
                         <span className='stickVert'></span>
                         <div style={{width: '30%'}} className='bd-highlight'>
                             <div>Корпус {apartament.info.find(info => info.title === 'Корпус').description}, Этаж {apartament.info.find(info => info.title === 'Этаж').description}</div>
-                            <div>{apartament.info.find(info => info.title === 'Заселение').description}</div>
+                            <div>{apartament.info.find(info => info.title === 'Дата').description}</div>
                         </div>
                         <span className='stickVert'></span>
                         <div style={{width: '30%'}} className='bd-highlight'>
