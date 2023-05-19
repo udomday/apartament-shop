@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import { Context } from ".";
 import { check } from "./http/userApi";
-import { Spinner } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 
 const App = observer(() => {
@@ -31,7 +31,9 @@ const App = observer(() => {
 
   return (
     <BrowserRouter>
-      <NavBar/>
+      <Container>
+        <NavBar/>
+      </Container>
       <AppRouter/>
     </BrowserRouter>
   );

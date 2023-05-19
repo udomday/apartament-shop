@@ -4,9 +4,12 @@ export default class ApartamentStore {
     constructor() {
         this._types = []
 
-        this._selectedType = ''
+        this._selectedType = {}
 
         this._districts = []
+
+        this._selectedDistricts = {}
+
         this._apartaments = [
             {id: 1, type: 'Студия', price: '123321323', districtDistrictId: 1, info: 
             [{id: 1, title: 'Площадь', description: '19.87'},
@@ -40,6 +43,10 @@ export default class ApartamentStore {
         this._selectedType = selectedType
     }
 
+    setSelectedDistrict(selectedDistrict){
+        this._selectedDistrict = selectedDistrict
+    }
+
     get apartaments() {
         return this._apartaments
     }
@@ -51,5 +58,8 @@ export default class ApartamentStore {
     }
     get selectedType(){
         return this._selectedType
+    }
+    get selectedDistrict(){
+        return this._selectedDistrict
     }
 }
