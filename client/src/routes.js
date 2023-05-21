@@ -6,11 +6,15 @@ import Districts from "./pages/Districts"
 import FavoritePage from "./pages/FavoritePage"
 import { ADMIN_ROUTE, APARTAMENT_ROUTE, DISTRICTS_ROUTE, DISTRICT_ROUTE, FAVLIST_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE } from "./utils/consts"
 
-export const authRoutes = [
+
+export const adminRoutes = [
     {
         path: ADMIN_ROUTE,
         Component: Admin
-    },
+    }
+]
+
+export const authRoutes = [
     {
         path: FAVLIST_ROUTE,
         Component: FavoritePage

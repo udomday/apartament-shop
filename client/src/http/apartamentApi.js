@@ -18,8 +18,10 @@ export const createDistrict = async (district) => {
     return data
 }
 
-export const fetchDistricts = async () => {
-    const {data} = await $host.get('api/district')
+export const fetchDistricts = async (page, limit) => {
+    const {data} = await $host.get('api/district', {params: {
+        page, limit
+    }})
     return data
 }
 
@@ -28,8 +30,8 @@ export const fetchOneDistrict = async (id) => {
     return data
 }
 
-export const createApartament = async (district) => {
-    const {data} = await $authHost.post('api/apartament', district)
+export const createApartament = async (apartament) => {
+    const {data} = await $authHost.post('api/apartament', apartament)
     return data
 }
 

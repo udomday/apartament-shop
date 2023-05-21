@@ -5,7 +5,6 @@ import { createApartament, fetchDistricts, fetchTypes } from "../../http/apartam
 
 const CreateApartament = ({show, onHide}) => {
     const {apartaments} = useContext(Context)
-    apartaments.types.map(type => console.log(type))
     const [stateType, setStateType] = useState({})
     const [stateDistrict, setStateDistrict] = useState({})
     const [name, setName] = useState('')
@@ -29,6 +28,7 @@ const CreateApartament = ({show, onHide}) => {
 
     const addApartament = () => {
       if(stateType && stateDistrict && name && floor && corpus && date && ploshad && potolok && propiska && price && file){
+        console.log(stateDistrict.id, file)
         let info = [];
         let getDate = new Date(date)
         let getMonth = getDate.toLocaleString('default', {month: 'long'})
@@ -48,11 +48,22 @@ const CreateApartament = ({show, onHide}) => {
         const formData = new FormData()
         formData.append('title', name)
         formData.append('price', `${price}`)
-        formData.append('apartamentTypeId', stateType.id)
-        formData.append('districtId', stateDistrict.id)
+        formData.append('apartamentTypeId',`${ stateType.id}`)
+        formData.append('districtId', `${stateDistrict.id}`)
         formData.append('info', JSON.stringify(info))
-        formData.append('photos',JSON.stringify(file))
+        formData.append('photos', file)
         createApartament(formData).then(data => onHide())
+        setStateType('')
+        setStateDistrict('')
+        setFloor('')
+        setName('')
+        setDate('')
+        setCorpus('')
+        setPotolok('')
+        setPloshad('')
+        setPropiska('')
+        setPrice('')
+        setFile([])
       } else {
         alert("Необходимо заполнить все поля")
       }

@@ -19,12 +19,20 @@ const Auth = observer(() => {
         try{
             let data;
             if(isLogin){
-                data = await login(phoneNumber, password)
+                data = await login(phoneNumber, password).then((data)=>{
+                    user.setUser(data)
+                    user.setIsAuth(true)
+                })
             } else {
-                data = await registration(phoneNumber, password, 'Rosf Fos')
+                if(phoneNumber && password && FIO){
+                    data = await registration(phoneNumber, password, FIO).then((data)=>{
+                        user.setUser(data)
+                        user.setIsAuth(true)
+                    })
+                } else {
+                    alert('Необходимо заполнить все поля')
+                }
             }
-            user.setUser(user)
-            user.setIsAuth(true)
             history(DISTRICTS_ROUTE)
         }catch(e){
             alert(e.response.data.message)

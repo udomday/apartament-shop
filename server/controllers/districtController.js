@@ -11,14 +11,12 @@ class DistrictController {
             const district = await District.create({title, metro, description})
             console.log(photos)
             if(!!photos){
-                photos.forEach(photo => {
-                    let fileName = uuid.v4() + ".jpg"
-                    photo.mv(path.resolve(__dirname, '..', 'static', fileName))
-                    DistrictPhotos.create({
-                        linkPhoto: fileName,
-                        districtId: district.id
-                    })
-                });
+                let fileName = uuid.v4() + ".jpg"
+                photos.mv(path.resolve(__dirname, '..', 'static', fileName))
+                DistrictPhotos.create({
+                    linkPhoto: fileName,
+                    districtId: district.id
+                })
             }
     
             return res.json(district)
@@ -28,7 +26,16 @@ class DistrictController {
     }
 
     async getAll(req, res){
-        const districts = await District.findAll()
+        let {limit, page} = req.query
+        page = page || 1
+        limit = limit || 9
+        console.log(limit, page)
+        let offset = page * limit - limit
+        const districts = await District.findAndCountAll({
+            include: [{model: DistrictPhotos, as: 'photos'}],
+            limit: Number(limit), 
+            offset: Number(offset)
+        })
         return res.json(districts)
     }
 

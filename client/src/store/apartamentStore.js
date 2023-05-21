@@ -24,6 +24,11 @@ export default class ApartamentStore {
             {id: 8, title: 'Корпус', description: '1.1'},
             ]}
         ]
+
+        this._districtPage = 1
+        this._districtTotalCount = 0
+        this._districtLimit = 4
+
         makeAutoObservable(this)
     }
 
@@ -47,6 +52,18 @@ export default class ApartamentStore {
         this._selectedDistrict = selectedDistrict
     }
 
+    setDistrictPage(page){
+        this._districtPage = page
+    }
+
+    setDistrictTotalCount(totalCount){
+        this._districtTotalCount = totalCount
+    }
+
+    setDistrictLimit(limit){
+        this._districtLimit = limit
+    }
+
     get apartaments() {
         return this._apartaments
     }
@@ -61,5 +78,14 @@ export default class ApartamentStore {
     }
     get selectedDistrict(){
         return this._selectedDistrict
+    }
+    get districtPage(){
+        return this._districtPage
+    }
+    get districtTotalCount(){
+        return this._districtTotalCount 
+    }
+    get districtLimit(){
+        return this._districtLimit
     }
 }

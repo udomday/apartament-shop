@@ -12,7 +12,9 @@ const ApartamentList = observer(() => {
     const {id} = useParams()
 
     useEffect(() => {  
-        fetchApartaments(id).then(data => setDistrict(data))
+        fetchApartaments(id).then(data =>{
+            setDistrict(data.rows)
+        })
     }, [])
 
     if(district){

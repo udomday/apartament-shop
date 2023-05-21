@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Context } from '..';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -7,17 +7,19 @@ import {Button} from 'react-bootstrap'
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTE, LOGIN_ROUTE } from '../utils/consts';
+import { check } from '../http/userApi';
 
 const NavBar = observer(() => {
     const history = useNavigate()
-
+    const [role, setRole] = useState('')
+    check().then(data => setRole(data.role))
+    
     const {user} = useContext(Context)
 
     const logOut = () => {
         localStorage.setItem('token', "")
         user.setUser({})
         user.setIsAuth(false)
-        console.log(user.isAuth)
     }
 
     return (
@@ -26,7 +28,11 @@ const NavBar = observer(() => {
           <Navbar.Brand href="/">ПАК</Navbar.Brand>
           {user.isAuth ?
             <Nav className="ms-auto">
-                <Button onClick={()=>history(ADMIN_ROUTE)} variant={'outline-light'}>Админ-панель</Button>
+                {role === "ADMIN" ?
+                  <Button onClick={()=>history(ADMIN_ROUTE)} variant={'outline-light'}>Админ-панель</Button>
+                  :
+                  <Button>Личный кабинет</Button>
+                }
                 <Button onClick={()=>logOut()} variant={'outline-light'} className="ms-3">Выйти</Button>
             </Nav>
             :

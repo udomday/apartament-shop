@@ -9,16 +9,28 @@ const DistrictsList = observer(() => {
     const {apartaments} = useContext(Context)
 
     useEffect(() => {
-        fetchDistricts().then(data => apartaments.setDistrict(data))
+        fetchDistricts(1, apartaments.districtLimit).then(data => {
+            apartaments.setDistrict(data.rows)
+            apartaments.setDistrictTotalCount(data.count)
+        })
       }, [])
 
-    return (
-        <Row  xs={{ cols: 2 }}>
-            {apartaments.districts.map((district => 
-                <DistrictItem key ={district.id} district={district}/>
-            ))}
-        </Row>
-    )
+    useEffect(()=>{
+        fetchDistricts(apartaments.districtPage, apartaments.districtLimit).then(data => {
+            apartaments.setDistrict(data.rows)
+            apartaments.setDistrictTotalCount(data.count)
+        })
+    }, [apartaments.districtPage])
+    console.log()
+    if(apartaments){
+        return (
+            <Row  xs={{ cols: 2 }}>
+                {apartaments.districts.map((district => 
+                    <DistrictItem key ={district.id} district={district}/>
+                ))}
+            </Row>
+        )
+    }
 })
 
 export default DistrictsList

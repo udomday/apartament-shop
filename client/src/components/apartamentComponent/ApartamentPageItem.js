@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Row } from 'react-bootstrap';
+import { Button, Card, Image, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { fetchOneApartament } from '../../http/apartamentApi';
 
@@ -16,7 +16,7 @@ const ApartamnetPageItem = observer(() => {
         return(
             <div style={{width: '100%'}} className='d-flex flex-row mt-2'>
                 <Card style={{marginRight: '2%', width: '68%', backgroundColor:'rgb(247, 247, 245)', borderColor: 'rgb(247, 247, 245)'}}>
-                    PHOTO
+                    <Image width={'90%'} height={'100%'} src={process.env.REACT_APP_API_URL + apartament.photos[0].linkPhoto}></Image>
                 </Card>
                 <Card style={{width: '30%', backgroundColor:'rgb(247, 247, 245)', borderColor: 'rgb(247, 247, 245)'}}>
                     <div className='p-2'>

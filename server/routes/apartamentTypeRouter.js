@@ -3,7 +3,7 @@ const router = new Router();
 const apartamentTypeController= require('../controllers/apartamentTypeController');
 const checkRole = require('../middleware/checkMiddleware')
 
-router.post('/', apartamentTypeController.create)
+router.post('/',  checkRole("ADMIN"), apartamentTypeController.create)
 router.get('/', apartamentTypeController.getAll)
 
 module.exports = router

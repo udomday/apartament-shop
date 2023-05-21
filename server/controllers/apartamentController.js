@@ -7,30 +7,32 @@ const { Sequelize } = require("../db");
 class ApartamentController {
     async create(req, res, next){
         try{
-            const {title, apartamentTypeId, price, info} = req.body
+            let {title, apartamentTypeId, districtId, price, info} = req.body
             const {photos} = req.files
-            const apartament = await Apartament.create({title, apartamentTypeId, price})
-            if(!!info){
-                console.log("РАБОТАЕТ")
-                info = JSON.parse(info)
-                info.forEach(i => {
-                    ApartamentInfo.create({
-                        title: i.title,
-                        description: i.description,
-                        apartamentId: apartament.id
-                    })
-                });
+            const apartament = await Apartament.create({title, apartamentTypeId, price, districtId})
+            try{
+                if(!!info){
+                    info = JSON.parse(info)
+                    info.forEach(i => {
+                        ApartamentInfo.create({
+                            title: i.title,
+                            description: i.description,
+                            apartamentId: apartament.id
+                        })
+                    });
+                }
+            }catch(e){
+                console.log(e)
             }
 
             if(!!photos){
-                photos.forEach(photo => {
+                console.log('WORKING')
                     let fileName = uuid.v4() + ".jpg"
-                    photo.mv(path.resolve(__dirname, '..', 'static', fileName))
+                    photos.mv(path.resolve(__dirname, '..', 'static', fileName))
                     ApartamentPhotos.create({
                         linkPhoto: fileName,
                         apartamentId: apartament.id
                     })
-                });
             }
             
             return res.json(apartament)
@@ -48,13 +50,13 @@ class ApartamentController {
             let offset = page * limit - limit
             let apartaments;
             if(!apartamentTypeId){
-                apartaments = await Apartament.findAll(
+                apartaments = await Apartament.findAndCountAll(
                     {
                         where:{districtId},
                         include: [{model: ApartamentInfo, as: 'info'}, {model: ApartamentPhotos, as: 'photos'}]
                     }, limit, offset);
             } else{
-                apartaments = await Apartament.findAll(
+                apartaments = await Apartament.findAndCountAll(
                 {
                     where:{apartamentTypeId, districtId},
                     include: [

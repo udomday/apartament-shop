@@ -3,7 +3,7 @@ const router = new Router();
 const apartamentController = require('../controllers/apartamentController');
 const checkRole = require('../middleware/checkMiddleware')
 
-router.post('/', checkRole(), apartamentController.create)
+router.post('/', checkRole("ADMIN"), apartamentController.create)
 router.get('/', apartamentController.getAll)
 router.get('/:id', apartamentController.getOne)
 
