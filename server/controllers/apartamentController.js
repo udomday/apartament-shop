@@ -43,18 +43,22 @@ class ApartamentController {
 
     async getAll(req, res, next){
         try{
-            let {apartamentTypeId, limit, page} = req.body
-            let {districtId} = req.query
+            let {districtId, limit, page, apartamentTypeId} = req.query
+            console.log(districtId, limit, page, apartamentTypeId)
             page = page || 1
             limit = limit || 9
             let offset = page * limit - limit
             let apartaments;
+            console.log(apartamentTypeId)
             if(!apartamentTypeId){
                 apartaments = await Apartament.findAndCountAll(
                     {
                         where:{districtId},
-                        include: [{model: ApartamentInfo, as: 'info'}, {model: ApartamentPhotos, as: 'photos'}]
-                    }, limit, offset);
+                        include: [{model: ApartamentInfo, as: 'info'}, {model: ApartamentPhotos, as: 'photos'}],
+                        limit: Number(limit), 
+                        offset: Number(offset)
+                    });
+                apartaments.count = await Apartament.count()
             } else{
                 apartaments = await Apartament.findAndCountAll(
                 {
@@ -62,10 +66,13 @@ class ApartamentController {
                     include: [
                         {model: ApartamentInfo, as: 'info'}, 
                         {model: ApartamentPhotos, as: 'photos'},
-                        
-                    ]
-                }, limit, offset);
+                    ],
+                    limit: Number(limit), 
+                    offset: Number(offset)
+                });
+                apartaments.count = await Apartament.count({where:{apartamentTypeId}})
             }
+            console.log(apartaments)
             return res.json(apartaments)
         }catch(e){
             return res.json({message: "Нет данных"})

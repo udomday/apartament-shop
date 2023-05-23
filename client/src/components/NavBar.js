@@ -3,18 +3,18 @@ import { Context } from '..';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import {Button} from 'react-bootstrap'
+import {Button, NavDropdown} from 'react-bootstrap'
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { ADMIN_ROUTE, LOGIN_ROUTE } from '../utils/consts';
+import { ADMIN_ROUTE, LOGIN_ROUTE, USER_ROUTE } from '../utils/consts';
 import { check } from '../http/userApi';
+import Contex from '..'
 
 const NavBar = observer(() => {
-    const history = useNavigate()
-    const [role, setRole] = useState('')
-    check().then(data => setRole(data.role))
-    
     const {user} = useContext(Context)
+    const history = useNavigate()
+    
+    check().then(data => user.setUser(data))
 
     const logOut = () => {
         localStorage.setItem('token', "")
@@ -28,12 +28,23 @@ const NavBar = observer(() => {
           <Navbar.Brand href="/">ПАК</Navbar.Brand>
           {user.isAuth ?
             <Nav className="ms-auto">
-                {role === "ADMIN" ?
+                {user.user.role === "ADMIN" ?
+                <div>
                   <Button onClick={()=>history(ADMIN_ROUTE)} variant={'outline-light'}>Админ-панель</Button>
+                  <Button onClick={()=>logOut()} variant={'outline-light'} className="ms-3">Выйти</Button>
+                </div>
                   :
-                  <Button>Личный кабинет</Button>
+                  <NavDropdown
+                    id="nav-dropdown-dark-example"
+                    title={user.user.FIO}
+                    menuVariant="dark"
+                  > 
+                  <NavDropdown.Item onClick={()=>history(USER_ROUTE + `/` + user.user.id)}>Личный кабинет</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">Избранное</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={()=>logOut()}>Выйти</NavDropdown.Item>
+                  </NavDropdown>
                 }
-                <Button onClick={()=>logOut()} variant={'outline-light'} className="ms-3">Выйти</Button>
             </Nav>
             :
             <Nav className="ms-auto">

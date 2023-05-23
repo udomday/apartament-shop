@@ -19,9 +19,10 @@ const DistrictsList = observer(() => {
         fetchDistricts(apartaments.districtPage, apartaments.districtLimit).then(data => {
             apartaments.setDistrict(data.rows)
             apartaments.setDistrictTotalCount(data.count)
+            console.log(data)
         })
     }, [apartaments.districtPage])
-    console.log()
+
     if(apartaments){
         return (
             <Row  xs={{ cols: 2 }}>

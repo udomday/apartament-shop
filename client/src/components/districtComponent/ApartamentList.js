@@ -8,19 +8,26 @@ import { useParams } from 'react-router-dom';
 
 const ApartamentList = observer(() => {
     const {apartaments} = useContext(Context)
-    const [district, setDistrict] = useState()
     const {id} = useParams()
 
     useEffect(() => {  
-        fetchApartaments(id).then(data =>{
-            setDistrict(data.rows)
+        fetchApartaments(id, 1, apartaments.apartamentLimit, apartaments.selectedType).then(data =>{
+            apartaments.setApartaments(data.rows)
+            apartaments.setApartamentTotalCount(data.count)
         })
     }, [])
 
-    if(district){
+    useEffect(() => {  
+        fetchApartaments(id, apartaments.apartamentPage, apartaments.apartamentLimit, apartaments.selectedType).then(data =>{
+            apartaments.setApartaments(data.rows)
+            apartaments.setApartamentTotalCount(data.count)
+        })
+    }, [apartaments.apartamentPage, apartaments.selectedType])
+
+    if(apartaments.apartaments){
         return(
             <Row xs={{ cols: 1 }}>
-                {district.map((apartament => 
+                {apartaments.apartaments.map((apartament => 
                     <ApartamentItem key={apartament.id} apartament = {apartament}/>
                 ))}
             </Row>

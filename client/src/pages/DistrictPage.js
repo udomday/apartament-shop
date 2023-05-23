@@ -2,6 +2,7 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import SortBar from '../components/SortBar'
 import ApartamentList from '../components/districtComponent/ApartamentList'
+import ApartamentPages from '../components/apartamentComponent/ApartamentPages'
 
 
 const DistrictPage = () => {
@@ -9,6 +10,7 @@ const DistrictPage = () => {
         <Container>
             <SortBar/>
             <ApartamentList/>
+            <ApartamentPages/>
         </Container>
     )
 }

@@ -9,7 +9,6 @@ const Districts = () => {
     return (
         <Container className='d-flex flex-column '>
             {/* Панель поиска */}
-            <SortBar/>
             <DistrictsList />
             <Pages/>
         </Container>

@@ -4,30 +4,21 @@ export default class ApartamentStore {
     constructor() {
         this._types = []
 
-        this._selectedType = {}
+        this._selectedType = ''
 
         this._districts = []
 
         this._selectedDistricts = {}
 
-        this._apartaments = [
-            {id: 1, type: 'Студия', price: '123321323', districtDistrictId: 1, info: 
-            [{id: 1, title: 'Площадь', description: '19.87'},
-            {id: 2, title: 'Этаж', description: '2'},
-            {id: 3, title: 'Заселение', description: 'Заселение до 25 марта 2025'},
-            {id: 4, title: 'Корпус', description: '1.1'},
-            ]},
-            {id: 2, type: 'Двухкомнатная', price: '2001232', districtDistrictId: 1, info: 
-            [{id: 5, title: 'Площадь', description: '19.87'},
-            {id: 6, title: 'Этаж', description: '2'},
-            {id: 7, title: 'Заселение', description: 'Заселение до 25 марта 2025'},
-            {id: 8, title: 'Корпус', description: '1.1'},
-            ]}
-        ]
+        this._apartaments = []
 
         this._districtPage = 1
         this._districtTotalCount = 0
         this._districtLimit = 4
+
+        this._apartamentPage = 1
+        this._apartamentTotalCount = 0
+        this._apartamentLimit = 10
 
         makeAutoObservable(this)
     }
@@ -64,6 +55,18 @@ export default class ApartamentStore {
         this._districtLimit = limit
     }
 
+    setApartamentPage(page){
+        this._apartamentPage = page
+    }
+
+    setApartamentTotalCount(totalCount){
+        this._apartamentTotalCount = totalCount
+    }
+
+    setApartamentLimit(limit){
+        this._apartamentLimit = limit
+    }
+
     get apartaments() {
         return this._apartaments
     }
@@ -87,5 +90,14 @@ export default class ApartamentStore {
     }
     get districtLimit(){
         return this._districtLimit
+    }
+    get apartamentPage(){
+        return this._apartamentPage
+    }
+    get apartamentTotalCount(){
+        return this._apartamentTotalCount 
+    }
+    get apartamentLimit(){
+        return this._apartamentLimit
     }
 }

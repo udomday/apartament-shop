@@ -1,15 +1,18 @@
 import React from 'react';
-import { Card, Col } from 'react-bootstrap';
+import { Card, Col, Image } from 'react-bootstrap';
 import './styles/apartamentItem.css'
 import { useNavigate } from 'react-router-dom';
 import { APARTAMENT_ROUTE } from '../../utils/consts';
 const ApartamentItem = ({apartament}) => {
     
     const history = useNavigate();
+
+    
+
     return( 
         <Col onClick={()=>history(APARTAMENT_ROUTE + '/' + apartament.id)}>
             <Card style={{cursor: 'pointer', backgroundColor:'rgb(247, 247, 245)', borderColor: 'rgb(247, 247, 245)'}} className='mt-3 d-flex flex-row'>
-                <div style={{width: '15%'}} className='p-2 bd-highlight'>Photo</div>
+                <div style={{width: '15%'}} className='p-2 bd-highlight'><Image width={'90%'} height={'80%'} src={process.env.REACT_APP_API_URL + apartament.photos[0].linkPhoto}></Image></div>
                 <div style={{width: '85%'}} className='p-2 bd-highlight'>
                     <h3>{apartament.title}, {apartament.info.find(info => info.title === 'Площадь').description}м²</h3>
                     <div style={{width: '100%'}} className='d-flex  mt-2 justify-content-between'>

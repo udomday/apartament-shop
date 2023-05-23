@@ -23,3 +23,29 @@ export const check = async () => {
       console.log(e.response.data.message)
     }
 }
+
+export const updateUserInfo = async () => {
+    const {data} = await $authHost.put('api/user/update')
+    localStorage.setItem('token', data.token)
+    return jwt_decode(data.token)
+}
+
+export const createPassport = async (pasNumber, pasCode, pasDate, userDate, pasGet, userId) => {
+    try{
+        const {data} = await $authHost.post('api/user/passport', {pasNumber, pasCode, pasDate, userDate, pasGet, userId})
+        return data
+    }catch(e){
+        console.log(e.response.data.message)
+    }
+}
+
+export const getPassport = async (userId) => {
+    const {data} = await $authHost.get('api/user/passport', {params: {userId}})
+    return data
+}
+
+export const updatePassport = async (pasNumber, pasCode, pasDate, userDate, pasGet, userId) => {
+    console.log(pasNumber, pasCode, pasDate, userDate, pasGet, userId)
+    const {data} = await $authHost.put('api/user/passport', {pasNumber, pasCode, pasDate, userDate, pasGet}, {params: {userId}})
+    return data
+}

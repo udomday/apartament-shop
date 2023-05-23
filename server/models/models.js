@@ -2,21 +2,20 @@ const sequelize = require("../db");
 const {DataTypes} = require("sequelize");
 
 const User = sequelize.define('user',{
-    userId: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     FIO: {type: DataTypes.STRING, allowNull: false},
     phoneNumber: {type: DataTypes.STRING, unique: true, allowNull: false},
-    passportId: {type: DataTypes.INTEGER, allowNull: true},
     password: {type: DataTypes.STRING, allowNull: false},
-    SNILS: {type: DataTypes.INTEGER, unique: true, allowNull: true},
     role: {type: DataTypes.STRING, defaultValue: "USER"}
 });
 
 const Passport = sequelize.define('passport', {
-    passportId: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    pasNumber: {type: DataTypes.INTEGER, unique: true, allowNull: false},
-    pasCode: {type: DataTypes.INTEGER, allowNull: false},
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    pasNumber: {type: DataTypes.STRING, unique: true, allowNull: false},
+    pasCode: {type: DataTypes.STRING, allowNull: false},
     pasGet: {type: DataTypes.STRING, allowNull: false},
-    pasDate: {type: DataTypes.DATE, allowNull: false}
+    pasDate: {type: DataTypes.STRING, allowNull: false},
+    userDate: {type: DataTypes.STRING, allowNull: false}
 });
 
 const FavList = sequelize.define('favList', {

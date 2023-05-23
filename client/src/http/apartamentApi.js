@@ -35,9 +35,10 @@ export const createApartament = async (apartament) => {
     return data
 }
 
-export const fetchApartaments = async (districtId) => {
-    console.log(districtId)
-    const {data} = await $host.get('api/apartament?districtId=' + districtId)
+export const fetchApartaments = async (districtId, page, limit, apartamentTypeId) => {
+    const {data} = await $host.get('api/apartament', {params: {
+        districtId, page, limit, apartamentTypeId
+    }})
     return data
 }
 

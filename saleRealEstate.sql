@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 10 2023 г., 08:20
+-- Время создания: Май 23 2023 г., 20:31
 -- Версия сервера: 8.0.30
 -- Версия PHP: 7.2.34
 
@@ -68,6 +68,14 @@ CREATE TABLE `apartamentPhotos` (
   `apartamentId` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Дамп данных таблицы `apartamentPhotos`
+--
+
+INSERT INTO `apartamentPhotos` (`id`, `linkPhoto`, `createdAt`, `updatedAt`, `apartamentId`) VALUES
+(1, '3_90_sSFY6e7qB1TJ589i.svg', '2023-05-21 10:12:38', '2023-05-21 10:12:38', 1),
+(2, '8_1ns1_3.6-1_Qv9LXYAB2b347pja.svg', '2023-05-21 10:12:38', '2023-05-21 10:12:38', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -126,8 +134,7 @@ CREATE TABLE `chats` (
   `id` int NOT NULL,
   `userId` int NOT NULL,
   `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  `userUserId` int DEFAULT NULL
+  `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -143,6 +150,14 @@ CREATE TABLE `districtPhotos` (
   `updatedAt` datetime NOT NULL,
   `districtId` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `districtPhotos`
+--
+
+INSERT INTO `districtPhotos` (`id`, `linkPhoto`, `createdAt`, `updatedAt`, `districtId`) VALUES
+(1, '66eb594b-d05e-4bfe-b7bb-2d513bba5beb.jpg', '2023-05-21 10:09:03', '2023-05-21 10:09:03', 1),
+(2, '66eb594b-d05e-4bfe-b7bb-2d513bba5beb.jpg', '2023-05-21 10:09:03', '2023-05-21 10:09:03', 2);
 
 -- --------------------------------------------------------
 
@@ -191,18 +206,8 @@ CREATE TABLE `favLists` (
   `id` int NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `userUserId` int DEFAULT NULL
+  `userId` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Дамп данных таблицы `favLists`
---
-
-INSERT INTO `favLists` (`id`, `createdAt`, `updatedAt`, `userUserId`) VALUES
-(1, '2023-05-08 11:18:10', '2023-05-08 11:18:10', NULL),
-(2, '2023-05-08 11:26:10', '2023-05-08 11:26:10', NULL),
-(3, '2023-05-08 11:49:27', '2023-05-08 11:49:27', NULL),
-(4, '2023-05-08 11:50:40', '2023-05-08 11:50:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -225,15 +230,23 @@ CREATE TABLE `messages` (
 --
 
 CREATE TABLE `passports` (
-  `passportId` int NOT NULL,
-  `pasNumber` int NOT NULL,
-  `pasCode` int NOT NULL,
+  `id` int NOT NULL,
+  `pasNumber` varchar(255) NOT NULL,
+  `pasCode` varchar(255) NOT NULL,
   `pasGet` varchar(255) NOT NULL,
-  `pasDate` datetime NOT NULL,
+  `pasDate` varchar(255) NOT NULL,
+  `userDate` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `userUserId` int DEFAULT NULL
+  `userId` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `passports`
+--
+
+INSERT INTO `passports` (`id`, `pasNumber`, `pasCode`, `pasGet`, `pasDate`, `userDate`, `createdAt`, `updatedAt`, `userId`) VALUES
+(1, '1234567890', '123456', 'МДВ РОССИИ ПО ГОР. МОСКВЕ', '2023-05-19', '2002-07-17', '2023-05-22 17:06:38', '2023-05-23 06:24:59', 8);
 
 -- --------------------------------------------------------
 
@@ -242,12 +255,10 @@ CREATE TABLE `passports` (
 --
 
 CREATE TABLE `users` (
-  `userId` int NOT NULL,
+  `id` int NOT NULL,
   `FIO` varchar(255) NOT NULL,
   `phoneNumber` varchar(255) NOT NULL,
-  `passportId` int DEFAULT NULL,
   `password` varchar(255) NOT NULL,
-  `SNILS` int DEFAULT NULL,
   `role` varchar(255) DEFAULT 'USER',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
@@ -257,11 +268,9 @@ CREATE TABLE `users` (
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`userId`, `FIO`, `phoneNumber`, `passportId`, `password`, `SNILS`, `role`, `createdAt`, `updatedAt`) VALUES
-(1, 'sadasd', '124124', NULL, '$2b$05$KD1Cv1YEEB1vs7xBEVc5DOP2BFk5Aj3IAEngdAeqJiUeOQVUMP.yK', NULL, 'USER', '2023-05-08 11:18:10', '2023-05-08 11:18:10'),
-(2, 'Rosf Fos', '12124', NULL, '$2b$05$ZL44J..BVY4uN5yg3BLX1.9TcD9wIuIKM8F2fngphMiQ5OIIFlezq', NULL, 'ADMIN', '2023-05-08 11:26:10', '2023-05-08 11:26:10'),
-(3, 'Rosf Fos', '14124', NULL, '$2b$05$.XScJI2tSkBiSY.ZtrFBRuhIvJjYyklj9OwT/T0Uy6bxNU7Q.pg4K', NULL, 'ADMIN', '2023-05-08 11:49:27', '2023-05-08 11:49:27'),
-(4, 'Rosf Fos', '1234', NULL, '$2b$05$OinisVXrbDtf62aQZx8kTuIQaW83r1cQFf88AmNNjlN69FL50CzOm', NULL, 'ADMIN', '2023-05-08 11:50:40', '2023-05-08 11:50:40');
+INSERT INTO `users` (`id`, `FIO`, `phoneNumber`, `password`, `role`, `createdAt`, `updatedAt`) VALUES
+(7, 'Копаненко Игорь Сергеевич', 'admin', '$2b$05$MLHYAaO2t/IOEZ2Xld3MVuS3xwOSyEpQwcnqMygjOcGDJdrgq.Q5e', 'ADMIN', '2023-05-21 07:32:09', '2023-05-21 07:32:09'),
+(8, 'Федор Кишбекович Салогуб', 'user', '$2b$05$1913QBVBnubWBjI0L6d1Me2PGYt2EouZiANTnDSHNwBjujjRrQPq.', 'USER', '2023-05-21 07:33:13', '2023-05-21 07:33:13');
 
 --
 -- Индексы сохранённых таблиц
@@ -300,8 +309,7 @@ ALTER TABLE `apartamentTypes`
 --
 ALTER TABLE `chats`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `userId` (`userId`),
-  ADD KEY `userUserId` (`userUserId`);
+  ADD UNIQUE KEY `userId` (`userId`);
 
 --
 -- Индексы таблицы `districtPhotos`
@@ -329,7 +337,7 @@ ALTER TABLE `FavApartaments`
 --
 ALTER TABLE `favLists`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `userUserId` (`userUserId`);
+  ADD KEY `userId` (`userId`);
 
 --
 -- Индексы таблицы `messages`
@@ -342,17 +350,16 @@ ALTER TABLE `messages`
 -- Индексы таблицы `passports`
 --
 ALTER TABLE `passports`
-  ADD PRIMARY KEY (`passportId`),
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `pasNumber` (`pasNumber`),
-  ADD KEY `userUserId` (`userUserId`);
+  ADD KEY `userId` (`userId`);
 
 --
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`userId`),
-  ADD UNIQUE KEY `phoneNumber` (`phoneNumber`),
-  ADD UNIQUE KEY `SNILS` (`SNILS`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `phoneNumber` (`phoneNumber`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -368,7 +375,7 @@ ALTER TABLE `apartamentInfos`
 -- AUTO_INCREMENT для таблицы `apartamentPhotos`
 --
 ALTER TABLE `apartamentPhotos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `apartaments`
@@ -392,7 +399,7 @@ ALTER TABLE `chats`
 -- AUTO_INCREMENT для таблицы `districtPhotos`
 --
 ALTER TABLE `districtPhotos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `districts`
@@ -410,7 +417,7 @@ ALTER TABLE `FavApartaments`
 -- AUTO_INCREMENT для таблицы `favLists`
 --
 ALTER TABLE `favLists`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `messages`
@@ -422,13 +429,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT для таблицы `passports`
 --
 ALTER TABLE `passports`
-  MODIFY `passportId` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -457,7 +464,7 @@ ALTER TABLE `apartaments`
 -- Ограничения внешнего ключа таблицы `chats`
 --
 ALTER TABLE `chats`
-  ADD CONSTRAINT `chats_ibfk_1` FOREIGN KEY (`userUserId`) REFERENCES `users` (`userId`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `chats_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `districtPhotos`
@@ -476,7 +483,7 @@ ALTER TABLE `FavApartaments`
 -- Ограничения внешнего ключа таблицы `favLists`
 --
 ALTER TABLE `favLists`
-  ADD CONSTRAINT `favlists_ibfk_1` FOREIGN KEY (`userUserId`) REFERENCES `users` (`userId`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `favlists_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `messages`
@@ -488,7 +495,7 @@ ALTER TABLE `messages`
 -- Ограничения внешнего ключа таблицы `passports`
 --
 ALTER TABLE `passports`
-  ADD CONSTRAINT `passports_ibfk_1` FOREIGN KEY (`userUserId`) REFERENCES `users` (`userId`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `passports_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

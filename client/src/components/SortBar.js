@@ -11,7 +11,6 @@ const SortBar = observer(() =>{
       fetchTypes().then(data => apartaments.setTypes(data))
     }, [])
 
-
     return(
         <Navbar bg="light" expand="lg">
         <Container fluid>
@@ -26,14 +25,14 @@ const SortBar = observer(() =>{
                   variant="outline-dark" 
                   className='ms-2' 
                   key ={type.id}
-                  active = {type.title === apartaments.selectedType}
-                  onClick={() => apartaments.setSelectedType(type.title)}
+                  active = {type.id === apartaments.selectedType}
+                  onClick={() => apartaments.setSelectedType(type.id)}
                 >
                   {type.title}
                 </Button>
               )}
           </Nav>
-          <Form className="d-flex">
+          {/* <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
@@ -41,7 +40,18 @@ const SortBar = observer(() =>{
               aria-label="Search"
             />
             <Button variant="outline-success">Search</Button>
-          </Form>
+          </Form> */}
+          {
+            !!apartaments.selectedType ?
+              <Button
+                className='ms-2'
+                onClick={() => apartaments.setSelectedType('')}
+              >
+                Отчистить
+              </Button>
+            :
+            <div></div>
+          }
         </Navbar.Collapse>
       </Container>
     </Navbar>
