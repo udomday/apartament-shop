@@ -1,28 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { createPassport, getPassport, updatePassport } from "../../../http/userApi";
 import { useParams } from "react-router-dom";
 import { Context } from "../../..";
-import { observer } from "mobx-react-lite";
+import { getPassport, updatePassport } from "../../../http/userApi";
 
-const CreatePasport = observer(({show, onHide}) => {
+const UpdatePassport = ({show, onHide}) => {
     const {id} = useParams()
     const {user} = useContext(Context)
-
     
-    const [pasCode, setPasCode] = useState('')
-    const [pasNumber, setPasNumber] = useState('')
-    const [pasDate, setPasDate] = useState('')
-    const [userDate, setUserDate] = useState('')
-    const [pasGet, setPasGet] = useState('')
+    const [pasCode, setPasCode] = useState(user.passport.pasCode)
+    const [pasNumber, setPasNumber] = useState(user.passport.pasNumber)
+    const [pasDate, setPasDate] = useState(user.passport.pasDate)
+    const [userDate, setUserDate] = useState(user.passport.userDate)
+    const [pasGet, setPasGet] = useState(user.passport.pasGet)
 
-    const addPassport = () => {
-      createPassport(pasNumber, pasCode, pasDate, userDate, pasGet, id).then(data=>{
-        if(data){
-          user.setPassport(data)
-          onHide()
-        }
-      })
+    const newUpdatePassport = () => {
+        updatePassport(pasNumber, pasCode, pasDate, userDate, pasGet, id).then(data=>{
+            if(data){
+                getPassport(id).then(data => user.setPassport(data))
+                onHide()
+            }
+        })
     }
     
     return(
@@ -82,10 +80,10 @@ const CreatePasport = observer(({show, onHide}) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant='outline-danger' onClick={onHide}>Закрыть</Button>
-        <Button variant='outline-success' onClick={addPassport}>Добавить</Button>
+        <Button variant='outline-success' onClick={newUpdatePassport}>Сохранить</Button>
       </Modal.Footer>
     </Modal>
     )
-})
+}
 
-export default CreatePasport
+export default UpdatePassport

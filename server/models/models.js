@@ -78,7 +78,7 @@ Passport.belongsTo(User);
 User.hasOne(FavList);
 FavList.belongsTo(User);
 
-FavList.hasMany(FavApartament);
+FavList.hasMany(FavApartament, {as: 'favitems'});
 FavApartament.belongsTo(FavList);
 
 //Чат

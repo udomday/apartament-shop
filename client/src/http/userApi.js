@@ -24,10 +24,14 @@ export const check = async () => {
     }
 }
 
-export const updateUserInfo = async () => {
-    const {data} = await $authHost.put('api/user/update')
-    localStorage.setItem('token', data.token)
-    return jwt_decode(data.token)
+export const updateUserInfo = async (FIO, phoneNumber, id) => {
+    try{
+        const {data} = await $authHost.put('api/user/update', {FIO, phoneNumber}, {params: {id}})
+        localStorage.setItem('token', data.token)
+        return jwt_decode(data.token)
+    } catch(e){
+        alert(e.response.data.message)
+    }
 }
 
 export const createPassport = async (pasNumber, pasCode, pasDate, userDate, pasGet, userId) => {
@@ -35,7 +39,7 @@ export const createPassport = async (pasNumber, pasCode, pasDate, userDate, pasG
         const {data} = await $authHost.post('api/user/passport', {pasNumber, pasCode, pasDate, userDate, pasGet, userId})
         return data
     }catch(e){
-        console.log(e.response.data.message)
+        alert(e.response.data.message)
     }
 }
 
@@ -45,7 +49,47 @@ export const getPassport = async (userId) => {
 }
 
 export const updatePassport = async (pasNumber, pasCode, pasDate, userDate, pasGet, userId) => {
-    console.log(pasNumber, pasCode, pasDate, userDate, pasGet, userId)
-    const {data} = await $authHost.put('api/user/passport', {pasNumber, pasCode, pasDate, userDate, pasGet}, {params: {userId}})
-    return data
+    try{
+        const {data} = await $authHost.put('api/user/passport', {pasNumber, pasCode, pasDate, userDate, pasGet}, {params: {userId}})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const getFavList = async (id) => {
+    try{
+        const {data} = await $authHost.get('api/user/favlist', {params: {id}})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const getFavItems = async (id) => {
+    try{
+        const {data} = await $authHost.get('api/user/favitem')
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const createFavItem = async (favListId, apartamentId) => {
+    try{
+        console.log(favListId, apartamentId)
+        const {data} = await $authHost.post('api/user/favitem', {favListId, apartamentId})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const deleteFavItem = async (userId) => {
+    try{
+        const {data} = await $authHost.delete('api/user/favitem')
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
 }

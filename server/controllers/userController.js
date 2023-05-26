@@ -2,7 +2,7 @@ require("dotenv").config()
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User, FavList, Passport} = require('../models/models')
+const {User, FavList, Passport, FavApartament} = require('../models/models')
 
 const generateJWT = (id, phone, role, FIO) => {
     return jwt.sign(
@@ -50,16 +50,26 @@ class UserController {
     }
 
     async updateUserInfo(req, res, next){
-        const {id} = req.query
-        const user = await User.update({FIO, phoneNumber},{where: id})
-        const token = generateJWT(user.id, user.phoneNumber, user.role, user.FIO)
-        return res.json({token})
+        try{
+            const {id} = req.query 
+            const {FIO, phoneNumber} = req.body
+            await User.update({FIO, phoneNumber}, {where: {id}})
+            const user = await User.findOne({where: {id}})
+            const token = generateJWT(user.id, user.phoneNumber, user.role, user.FIO)
+            return res.json({token})
+        } catch (e){   
+            next(ApiError.badRequest('Пользователь с таким номером телефона или почтой уже существует'))
+        }
     }
 
     async createPassport(req, res, next){
-        const {pasNumber, pasCode, pasDate, userDate, pasGet, userId} = req.body
-        const passport = await Passport.create({pasNumber, pasCode, pasDate, userDate, pasGet, userId})
-        return res.json(passport)
+        try{
+            const {pasNumber, pasCode, pasDate, userDate, pasGet, userId} = req.body
+            const passport = await Passport.create({pasNumber, pasCode, pasDate, userDate, pasGet, userId})
+            return res.json(passport)
+        }catch {
+            return next(ApiError.badRequest('Паспорт с такими данными уже существует'))
+        }
     }
 
     async getPassport(req, res, next){
@@ -73,10 +83,45 @@ class UserController {
     }
 
     async updatePassport(req, res, next){
-        const {pasNumber, pasCode, pasDate, userDate, pasGet} = req.body
+        try{
+            const {pasNumber, pasCode, pasDate, userDate, pasGet} = req.body
+            const {userId} = req.query
+            const passport = await Passport.update({pasNumber, pasCode, pasDate, userDate, pasGet}, {where: {userId}})
+            return res.json(passport)
+        } catch {
+            return next(ApiError.badRequest('Паспорт с такими данными уже существует'))
+        }
+    }
+
+
+    async getFavList(req, res, next){
+        const {id} = req.query 
+        const favList = await FavList.findOne({
+            where: {userId: id},
+            include: [
+                {model: FavApartament, as: 'favitems'}, 
+            ],
+        })
+        return res.json(favList)
+    }
+
+    async createFavItem(req, res, next){
+        const {favListId, apartamentId} = req.body
+        const FavItem = FavApartament.create({favListId, apartamentId})
+        return res.json(FavItem)
+    }
+
+    async getAllFavItem(req, res, next){
         const {userId} = req.query
-        const passport = await Passport.update({pasNumber, pasCode, pasDate, userDate, pasGet}, {where: {userId}})
-        return res.json(passport)
+        const favListId = FavList.findOne({where: {userId}}).id
+        const favItems = FavApartament.findAll({where: {userId, favListId}})
+        return res.json(favItems)
+    }
+
+    async deleteFavItem(req, res, next){
+        const {id} = req.query
+        const favItem = FavApartament.delete({where: {id}})
+        return res.json(favItem)
     }
 
 }

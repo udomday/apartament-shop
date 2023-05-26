@@ -1,10 +1,11 @@
 import React from 'react'
+import { Container } from 'react-bootstrap';
 
 const FavoritePage = () => {
     return (
-        <div>
+        <Container>
             FavoritePage
-        </div>
+        </Container>
     );
 }
 

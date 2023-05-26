@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '..';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -6,22 +6,24 @@ import Navbar from 'react-bootstrap/Navbar';
 import {Button, NavDropdown} from 'react-bootstrap'
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { ADMIN_ROUTE, LOGIN_ROUTE, USER_ROUTE } from '../utils/consts';
+import { ADMIN_ROUTE, FAVLIST_ROUTE, LOGIN_ROUTE, USER_ROUTE } from '../utils/consts';
 import { check } from '../http/userApi';
-import Contex from '..'
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
     const history = useNavigate()
     
-    check().then(data => user.setUser(data))
+    useEffect(()=>{
+      check().then(data => {
+        user.setUser(data)
+      })
+    }, [])
 
     const logOut = () => {
         localStorage.setItem('token', "")
         user.setUser({})
         user.setIsAuth(false)
     }
-
     return (
         <Navbar bg="dark" variant="dark">
         <Container>
@@ -40,7 +42,7 @@ const NavBar = observer(() => {
                     menuVariant="dark"
                   > 
                   <NavDropdown.Item onClick={()=>history(USER_ROUTE + `/` + user.user.id)}>Личный кабинет</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">Избранное</NavDropdown.Item>
+                  <NavDropdown.Item onClick={()=>history(FAVLIST_ROUTE + `/` + user.user.id)}>Избранное</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={()=>logOut()}>Выйти</NavDropdown.Item>
                   </NavDropdown>

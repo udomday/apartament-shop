@@ -26,7 +26,6 @@ class ApartamentController {
             }
 
             if(!!photos){
-                console.log('WORKING')
                     let fileName = uuid.v4() + ".jpg"
                     photos.mv(path.resolve(__dirname, '..', 'static', fileName))
                     ApartamentPhotos.create({
@@ -44,12 +43,10 @@ class ApartamentController {
     async getAll(req, res, next){
         try{
             let {districtId, limit, page, apartamentTypeId} = req.query
-            console.log(districtId, limit, page, apartamentTypeId)
             page = page || 1
             limit = limit || 9
             let offset = page * limit - limit
             let apartaments;
-            console.log(apartamentTypeId)
             if(!apartamentTypeId){
                 apartaments = await Apartament.findAndCountAll(
                     {
@@ -72,7 +69,6 @@ class ApartamentController {
                 });
                 apartaments.count = await Apartament.count({where:{apartamentTypeId}})
             }
-            console.log(apartaments)
             return res.json(apartaments)
         }catch(e){
             return res.json({message: "Нет данных"})

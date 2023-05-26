@@ -17,7 +17,7 @@ export const adminRoutes = [
 
 export const authRoutes = [
     {
-        path: FAVLIST_ROUTE,
+        path: FAVLIST_ROUTE + '/:id',
         Component: FavoritePage
     }, 
     {

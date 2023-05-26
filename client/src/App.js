@@ -4,7 +4,7 @@ import NavBar from "./components/NavBar";
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import { Context } from ".";
-import { check } from "./http/userApi";
+import { check, getFavList } from "./http/userApi";
 import { Container, Spinner } from "react-bootstrap";
 
 
@@ -15,7 +15,7 @@ const App = observer(() => {
   useEffect(()=>{
     check().then(data => {
       if(data){
-        user.setUser(true)
+        user.setUser(data)
         user.setIsAuth(true)
       }
     }).finally(() => setLoading(false))

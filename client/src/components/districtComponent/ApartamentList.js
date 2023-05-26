@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 
 const ApartamentList = observer(() => {
     const {apartaments} = useContext(Context)
+
     const {id} = useParams()
 
     useEffect(() => {  

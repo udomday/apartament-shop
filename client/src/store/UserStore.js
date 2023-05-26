@@ -4,8 +4,14 @@ export default class UserStore {
     constructor() {
         this._isAuth = false
         this._user = {}
-        this._passport = 0
+        this._passport = null
+        this._favList = {}
+
         makeAutoObservable(this)
+    }
+
+    setFavList(favList){
+        return this._favList = favList
     }
 
     setPassport(passport){
@@ -20,6 +26,10 @@ export default class UserStore {
         return this._user = user
     }
 
+    get favList(){
+        return this._favList
+    }
+
     get passport() {
         return this._passport
     }
@@ -27,6 +37,7 @@ export default class UserStore {
     get isAuth() {
         return this._isAuth
     }
+
     get user() {
         return this._user
     }
