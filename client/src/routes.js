@@ -1,3 +1,4 @@
+import UserOrder from "./pages/UserOrders"
 import Admin from "./pages/Admin"
 import ApartamentPage from "./pages/ApartamentPage"
 import Auth from "./pages/Auth"
@@ -5,7 +6,7 @@ import DistrictPage from "./pages/DistrictPage"
 import Districts from "./pages/Districts"
 import FavoritePage from "./pages/FavoritePage"
 import UserPage from "./pages/UserPage"
-import { ADMIN_ROUTE, APARTAMENT_ROUTE, DISTRICTS_ROUTE, DISTRICT_ROUTE, FAVLIST_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, USER_ROUTE } from "./utils/consts"
+import { ADMIN_ROUTE, APARTAMENT_ROUTE, DISTRICTS_ROUTE, DISTRICT_ROUTE, FAVLIST_ROUTE, LOGIN_ROUTE, ORDERS_ROUTE, REGISTRATION_ROUTE, USER_ROUTE } from "./utils/consts"
 
 
 export const adminRoutes = [
@@ -23,6 +24,10 @@ export const authRoutes = [
     {
         path: USER_ROUTE + '/:id',
         Component: UserPage
+    },
+    {
+        path: ORDERS_ROUTE + '/:id',
+        Component: UserOrder
     }
 ]
 

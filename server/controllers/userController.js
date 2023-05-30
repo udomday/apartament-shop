@@ -2,7 +2,7 @@ require("dotenv").config()
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User, FavList, Passport, FavApartament, Apartament, ApartamentInfo, ApartamentPhotos} = require('../models/models')
+const {User, FavList, Passport, FavApartament, Apartament, ApartamentInfo, ApartamentPhotos, PurchaseOrder} = require('../models/models')
 
 const generateJWT = (id, phone, role, FIO) => {
     return jwt.sign(
@@ -130,6 +130,71 @@ class UserController {
         const {id} = req.query
         const favItem = await FavApartament.destroy({where: {id}})
         return res.json(favItem)
+    }
+
+    async createPurchaseOrder(req, res, next){
+        try{
+            const {userId, apartamentId, status} = req.body
+            const purchaseorders = await PurchaseOrder.create({userId, apartamentId, status})
+            return res.json(purchaseorders)
+        } catch(e){
+            return next(ApiError.badRequest('Заявка уже создана'))
+        }
+    }
+
+    async getAllPurchaseOrder(req, res, next){
+        try{
+            const {userId} = req.query
+            const purchaseorder = await PurchaseOrder.findAll({
+                where: {userId},
+                include: [{model: Apartament, include: [{model: ApartamentInfo, as: 'info'}]}, {model: User, attributes: ['FIO'], include: [{model: Passport}]}]
+            })
+            return res.json(purchaseorder)
+        } catch(e){
+            return next(ApiError.badRequest('Ошибка'))
+        }
+    }
+
+    async getOnePurchaseOrder(req, res, next){
+        try{
+            const {userId, id} = req.query
+            const purchaseorder = await PurchaseOrder.findOne({where: {userId, id}})
+            return res.json(purchaseorder)
+        } catch(e){
+            return next(ApiError.badRequest('Ошибка'))
+        }
+    }
+
+    async getAdminAllPurchaseOrder(req, res, next){
+        try{
+            const purchaseorder = await PurchaseOrder.findAll({
+                include: [{model: Apartament, include: [{model: ApartamentInfo, as: 'info'}]}, {model: User, attributes: ['FIO'], include: [{model: Passport}]}]
+            })
+            return res.json(purchaseorder)
+        } catch(e){
+            return next(ApiError.badRequest('Ошибка'))
+        }
+    }
+
+    async deletePurchaseOrder(req, res, next){
+        try{
+            const {id} = req.query
+            const purchaseorder = await PurchaseOrder.destroy({where: {id}})
+            return res.json(purchaseorder)
+        } catch(e){
+            return next(ApiError.badRequest('Ошибка'))
+        }
+    }
+
+    async updatePurchaseOrder(req, res, next){
+        try{
+            const {status} = req.body
+            const {id} = req.query
+            const purchaseorder = await PurchaseOrder.update({status}, {where: {id}})
+            return res.json(purchaseorder)
+        } catch(e){
+            return next(ApiError.badRequest('Ошибка'))
+        }
     }
 
 }

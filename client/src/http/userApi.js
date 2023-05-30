@@ -102,3 +102,57 @@ export const deleteFavItem = async (id) => {
         alert(e)
     }
 }
+
+export const createPurchaseOrder = async (userId, apartamentId, status) => {
+    try {
+        const {data} = await $authHost.post('api/user/purchaseorder', {userId, apartamentId, status})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const getAllPurchaseOrder = async (userId) => {
+    try {
+        const {data} = await $authHost.get('api/user/purchaseorders', {params: {userId}})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const getAdminAllPurchaseOrder = async (userId, apartamentId) => {
+    try {
+        const {data} = await $authHost.get('api/user/adminpurchaseorder')
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const getOnePurchaseOrder = async (userId, id) => {
+    try {
+        const {data} = await $authHost.get('api/user/purchaseorder', {params: {userId, id}})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const deletePurchaseOrder = async (id) => {
+    try {
+        const {data} = await $authHost.delete('api/user/purchaseorder', {params: {id}})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const updatePurchaseOrder = async (id, status) => {
+    try {
+        const {data} = await $authHost.put('api/user/updatepurchaseorder', {status}, {params: {id}})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}

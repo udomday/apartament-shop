@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import {Button, NavDropdown} from 'react-bootstrap'
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { ADMIN_ROUTE, FAVLIST_ROUTE, LOGIN_ROUTE, USER_ROUTE } from '../utils/consts';
+import { ADMIN_ROUTE, FAVLIST_ROUTE, LOGIN_ROUTE, ORDERS_ROUTE, USER_ROUTE } from '../utils/consts';
 import { check } from '../http/userApi';
 
 const NavBar = observer(() => {
@@ -31,23 +31,22 @@ const NavBar = observer(() => {
           <Navbar.Brand href="/">ПАК</Navbar.Brand>
           {user.isAuth ?
             <Nav className="ms-auto">
-                {user.user.role === "ADMIN" ?
-                <div>
-                  <Button onClick={()=>history(ADMIN_ROUTE)} variant={'outline-light'}>Админ-панель</Button>
-                  <Button onClick={()=>logOut()} variant={'outline-light'} className="ms-3">Выйти</Button>
-                </div>
-                  :
                   <NavDropdown
                     id="nav-dropdown-dark-example"
                     title={user.user.FIO}
                     menuVariant="dark"
                   > 
+                  {user.user.role === "ADMIN" ?
+                    <NavDropdown.Item onClick={()=>history(ADMIN_ROUTE)}>Админ панель</NavDropdown.Item>
+                    :
+                    <span></span>
+                  }
                   <NavDropdown.Item onClick={()=>history(USER_ROUTE + `/` + user.user.id)}>Личный кабинет</NavDropdown.Item>
+                  <NavDropdown.Item onClick={()=>history(ORDERS_ROUTE + `/` + user.user.id)}>Заявки</NavDropdown.Item>
                   <NavDropdown.Item onClick={()=>history(FAVLIST_ROUTE + `/` + user.user.id)}>Избранное</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item onClick={()=>logOut()}>Выйти</NavDropdown.Item>
                   </NavDropdown>
-                }
             </Nav>
             :
             <Nav className="ms-auto">
