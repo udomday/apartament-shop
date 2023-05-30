@@ -61,16 +61,6 @@ const ApartamentPhotos =  sequelize.define('apartamentPhotos', {
     linkPhoto: {type: DataTypes.STRING, allowNull: false}
 });
 
-const Chat = sequelize.define('chat', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    userId: {type: DataTypes.INTEGER, unique: true, allowNull: false}
-});
-
-const Message = sequelize.define('message', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    message: {type: DataTypes.STRING, allowNull: false}
-});
-
 const PurchaseOrder = sequelize.define('purchaseorder', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     status: {type: DataTypes.STRING, allowNull: false}
@@ -85,13 +75,6 @@ FavList.belongsTo(User);
 
 FavList.hasMany(FavApartament, {as: 'favitems'});
 FavApartament.belongsTo(FavList);
-
-//Чат
-User.hasMany(Chat);
-Chat.belongsTo(User);
-
-Chat.hasMany(Message);
-Message.belongsTo(Chat);
 
 //Объект
 ApartamentType.hasOne(Apartament);
@@ -123,8 +106,6 @@ PurchaseOrder.belongsTo(User)
 module.exports = {
     User,
     Passport,
-    Chat,
-    Message,
     FavList,
     FavApartament,
     District,
