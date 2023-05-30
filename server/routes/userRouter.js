@@ -16,7 +16,8 @@ router.put('/passport', UserController.updatePassport)
 
 router.get('/favlist', userController.getFavList)
 router.post('/favitem', UserController.createFavItem)
-router.get('/favitem', UserController.getAllFavItem)
-router.delete('/favitem,', UserController.deleteFavItem)
+router.get('/favitems', UserController.getAllFavItem)
+router.get('/favitem', UserController.getOneFavItem)
+router.delete('/favitem', UserController.deleteFavItem)
 
 module.exports = router

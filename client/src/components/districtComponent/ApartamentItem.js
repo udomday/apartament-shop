@@ -1,29 +1,49 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Card, Col, Image } from 'react-bootstrap';
 import './styles/apartamentItem.css'
 import { useNavigate } from 'react-router-dom';
 import { APARTAMENT_ROUTE } from '../../utils/consts';
 import { Context } from '../..';
 import { observer } from 'mobx-react-lite';
-import { createFavItem, getFavList } from '../../http/userApi';
-const ApartamentItem = ({apartament}) => {
-    
+import { createFavItem, deleteFavItem, getFavList, getOneFavItem } from '../../http/userApi';
+const ApartamentItem = observer(({apartament, setupdate}) => {
     const {user} = useContext(Context)
 
+    const [checkInFavList, setCheckInFavList] = useState()
     const history = useNavigate();
 
+    
     useEffect(()=>{
-        getFavList(user.user.id).then(data => {
-            user.setFavList(data)
-        })
+        if(user.isAuth){
+            getFavList(user.user.id).then(data => {
+                if(data){
+                    user.setFavList(data)
+                    getOneFavItem(data.id, apartament.id).then(data => {
+                        if(data){
+                            setCheckInFavList(true)
+                        } else {
+                            setCheckInFavList(false)
+                        }
+                    })
+                }
+            })
+        }
     },[])
     
     const newElementInFavList = () => {
-        if(user.user && user.favList){
-            createFavItem(user.favList.id, apartament.id)
-        } else {
-            console.log('user is no')
-        }
+        if(user.isAuth && user.user && user.favList){
+            getOneFavItem(user.favList.id, apartament.id).then(data => {
+                if(data){
+                    deleteFavItem(data.id)
+                    setCheckInFavList(false)
+                    setupdate(false)
+                } else{
+                    console.log('add')
+                    createFavItem(user.favList.id, apartament.id)
+                    setCheckInFavList(true)
+                }
+            })
+        } 
     }
 
     return( 
@@ -46,10 +66,16 @@ const ApartamentItem = ({apartament}) => {
                 </div>
             </Card>
             <div onClick={newElementInFavList} style={{width: '30%', position: 'absolute', right: "5%", top: '40%', zIndex:10}} className='bd-highlight'>
-                <div className='favBttn' style={{float: 'right' }}><svg viewBox="0 0 16 14" fill="none"><path d="M13.8338 2.09496C13.0898 1.38903 12.1279 1 11.1249 1C9.92844 1 8.7 1.66667 7.99999 3C7.3 1.66667 6.07155 1 4.87508 1C3.87211 1 2.91014 1.38903 2.16616 2.09496C1.66618 2.56938 0.852201 3.61074 1.0232 5.25081C1.19819 6.92694 3.00001 9 7.72251 13.4203C7.80651 13.473 7.903 13.5 8 13.5C8.097 13.5 8.19349 13.473 8.27749 13.4203C12.5 9.5 14.8018 6.92694 14.9768 5.25081C15.1478 3.61074 14.3343 2.56986 13.8338 2.09496Z" stroke="#141414" stroke-linejoin="round"></path></svg></div>
+                <div className='favBttn' style={{float: 'right' }}>
+                    { checkInFavList ?
+                        <svg  viewBox="0 0 16 14" style={{filter: 'invert(16%) sepia(95%) saturate(6366%) hue-rotate(4deg) brightness(100%) contrast(121%)'}} fill="#FF0000"><path d="M13.8338 2.09496C13.0898 1.38903 12.1279 1 11.1249 1C9.92844 1 8.7 1.66667 7.99999 3C7.3 1.66667 6.07155 1 4.87508 1C3.87211 1 2.91014 1.38903 2.16616 2.09496C1.66618 2.56938 0.852201 3.61074 1.0232 5.25081C1.19819 6.92694 3.00001 9 7.72251 13.4203C7.80651 13.473 7.903 13.5 8 13.5C8.097 13.5 8.19349 13.473 8.27749 13.4203C12.5 9.5 14.8018 6.92694 14.9768 5.25081C15.1478 3.61074 14.3343 2.56986 13.8338 2.09496Z" stroke="#141414" stroke-linejoin="round"></path></svg>
+                        :
+                        <svg  viewBox="0 0 16 14"  fill="none"><path d="M13.8338 2.09496C13.0898 1.38903 12.1279 1 11.1249 1C9.92844 1 8.7 1.66667 7.99999 3C7.3 1.66667 6.07155 1 4.87508 1C3.87211 1 2.91014 1.38903 2.16616 2.09496C1.66618 2.56938 0.852201 3.61074 1.0232 5.25081C1.19819 6.92694 3.00001 9 7.72251 13.4203C7.80651 13.473 7.903 13.5 8 13.5C8.097 13.5 8.19349 13.473 8.27749 13.4203C12.5 9.5 14.8018 6.92694 14.9768 5.25081C15.1478 3.61074 14.3343 2.56986 13.8338 2.09496Z" stroke="#141414" stroke-linejoin="round"></path></svg>
+                    }
+                </div>
             </div>
         </Col>
     )
-}
+})
 
 export default ApartamentItem;

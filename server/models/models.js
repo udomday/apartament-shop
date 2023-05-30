@@ -71,6 +71,11 @@ const Message = sequelize.define('message', {
     message: {type: DataTypes.STRING, allowNull: false}
 });
 
+const PurchaseOrder = sequelize.define('purchaseorder', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    status: {type: DataTypes.STRING, allowNull: false}
+});
+
 User.hasOne(Passport);
 Passport.belongsTo(User);
 
@@ -107,6 +112,14 @@ ApartamentInfo.belongsTo(Apartament);
 Apartament.hasMany(ApartamentPhotos, {as: 'photos'});
 ApartamentPhotos.belongsTo(Apartament);
 
+//Покупка квартиры
+
+Apartament.hasMany(PurchaseOrder)
+PurchaseOrder.belongsTo(Apartament)
+
+User.hasMany(PurchaseOrder)
+PurchaseOrder.belongsTo(User)
+
 module.exports = {
     User,
     Passport,
@@ -119,5 +132,6 @@ module.exports = {
     Apartament,
     ApartamentType,
     ApartamentInfo,
-    ApartamentPhotos
+    ApartamentPhotos,
+    PurchaseOrder
 }

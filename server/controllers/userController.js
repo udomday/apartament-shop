@@ -2,7 +2,7 @@ require("dotenv").config()
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User, FavList, Passport, FavApartament} = require('../models/models')
+const {User, FavList, Passport, FavApartament, Apartament, ApartamentInfo, ApartamentPhotos} = require('../models/models')
 
 const generateJWT = (id, phone, role, FIO) => {
     return jwt.sign(
@@ -107,20 +107,28 @@ class UserController {
 
     async createFavItem(req, res, next){
         const {favListId, apartamentId} = req.body
-        const FavItem = FavApartament.create({favListId, apartamentId})
+        const FavItem = await FavApartament.create({favListId, apartamentId})
         return res.json(FavItem)
     }
 
+    async getOneFavItem(req, res, next){
+        const {favListId, apartamentId} = req.query
+        const favItem = await FavApartament.findOne({where: {favListId, apartamentId}})
+        return res.json(favItem)
+    }
+
     async getAllFavItem(req, res, next){
-        const {userId} = req.query
-        const favListId = FavList.findOne({where: {userId}}).id
-        const favItems = FavApartament.findAll({where: {userId, favListId}})
+        const {id} = req.query
+        const favItems = await FavApartament.findAll({
+            where: {favListId: id},
+            include: {model: Apartament, include: [{model: ApartamentInfo, as: 'info'}, {model: ApartamentPhotos, as: 'photos'}], as: 'apartament'}
+        })
         return res.json(favItems)
     }
 
     async deleteFavItem(req, res, next){
         const {id} = req.query
-        const favItem = FavApartament.delete({where: {id}})
+        const favItem = await FavApartament.destroy({where: {id}})
         return res.json(favItem)
     }
 

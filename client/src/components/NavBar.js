@@ -23,6 +23,7 @@ const NavBar = observer(() => {
         localStorage.setItem('token', "")
         user.setUser({})
         user.setIsAuth(false)
+        history(LOGIN_ROUTE)
     }
     return (
         <Navbar bg="dark" variant="dark">

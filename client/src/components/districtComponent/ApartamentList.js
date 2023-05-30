@@ -25,6 +25,7 @@ const ApartamentList = observer(() => {
         })
     }, [apartaments.apartamentPage, apartaments.selectedType])
 
+    
     if(apartaments.apartaments){
         return(
             <Row xs={{ cols: 1 }}>

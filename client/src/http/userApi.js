@@ -66,9 +66,18 @@ export const getFavList = async (id) => {
     }
 }
 
-export const getFavItems = async (id) => {
+export const getOneFavItem = async (favListId, apartamentId) => {
     try{
-        const {data} = await $authHost.get('api/user/favitem')
+        const {data} = await $authHost.get('api/user/favitem', {params: {favListId, apartamentId}})
+        return data
+    } catch(e){
+        alert(e.response.data.message)
+    }
+}
+
+export const getAllFavItems = async (id) => {
+    try{
+        const {data} = await $authHost.get('api/user/favitems', {params: {id}})
         return data
     } catch(e){
         alert(e.response.data.message)
@@ -85,11 +94,11 @@ export const createFavItem = async (favListId, apartamentId) => {
     }
 }
 
-export const deleteFavItem = async (userId) => {
+export const deleteFavItem = async (id) => {
     try{
-        const {data} = await $authHost.delete('api/user/favitem')
+        const {data} = await $authHost.delete('api/user/favitem', {params: {id}})
         return data
     } catch(e){
-        alert(e.response.data.message)
+        alert(e)
     }
 }
