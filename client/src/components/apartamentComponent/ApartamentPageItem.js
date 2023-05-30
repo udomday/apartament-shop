@@ -17,6 +17,7 @@ const ApartamnetPageItem = observer(() => {
     const addApartamentOrder = () => {
         if(user.isAuth){
             getOnePurchaseOrder(user.user.id, id).then(data => {
+                console.log(data)
                 if(data){
                     alert('Вы уже создали заявку на покупку этой квартиры')
                 } else {

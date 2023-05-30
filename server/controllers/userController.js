@@ -157,8 +157,8 @@ class UserController {
 
     async getOnePurchaseOrder(req, res, next){
         try{
-            const {userId, id} = req.query
-            const purchaseorder = await PurchaseOrder.findOne({where: {userId, id}})
+            const {userId, apartamentId} = req.query
+            const purchaseorder = await PurchaseOrder.findOne({where: {userId, apartamentId}})
             return res.json(purchaseorder)
         } catch(e){
             return next(ApiError.badRequest('Ошибка'))

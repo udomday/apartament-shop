@@ -130,9 +130,9 @@ export const getAdminAllPurchaseOrder = async (userId, apartamentId) => {
     }
 }
 
-export const getOnePurchaseOrder = async (userId, id) => {
+export const getOnePurchaseOrder = async (userId, apartamentId) => {
     try {
-        const {data} = await $authHost.get('api/user/purchaseorder', {params: {userId, id}})
+        const {data} = await $authHost.get('api/user/purchaseorder', {params: {userId, apartamentId}})
         return data
     } catch(e){
         alert(e.response.data.message)
