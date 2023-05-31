@@ -12,6 +12,10 @@ export const fetchTypes = async () => {
     return data
 }
 
+export const fetchOneTypes = async (id) => {
+    const {data} = await $authHost.get('api/apartype/type', {params:{id}})
+    return data
+}
 
 export const createDistrict = async (district) => {
     const {data} = await $authHost.post('api/district', district)
@@ -32,6 +36,11 @@ export const fetchOneDistrict = async (id) => {
 
 export const createApartament = async (apartament) => {
     const {data} = await $authHost.post('api/apartament', apartament)
+    return data
+}
+
+export const updateApartament = async (apartament) => {
+    const {data} = await $authHost.put('api/apartament', apartament)
     return data
 }
 

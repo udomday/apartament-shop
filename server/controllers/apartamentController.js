@@ -3,6 +3,7 @@ const ApiError = require("../error/ApiError")
 const uuid = require('uuid')
 const path = require('path');
 const { Sequelize } = require("../db");
+const { where } = require("sequelize");
 
 class ApartamentController {
     async create(req, res, next){
@@ -19,6 +20,38 @@ class ApartamentController {
                             description: i.description,
                             apartamentId: apartament.id
                         })
+                    });
+                }
+            }catch(e){
+                console.log(e)
+            }
+
+            if(!!photos){
+                    let fileName = uuid.v4() + ".jpg"
+                    photos.mv(path.resolve(__dirname, '..', 'static', fileName))
+                    ApartamentPhotos.create({
+                        linkPhoto: fileName,
+                        apartamentId: apartament.id
+                    })
+            }
+            
+            return res.json(apartament)
+        }catch(e){
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async update(req, res, next){
+        try{
+            let {id, title, apartamentTypeId, districtId, price, info} = req.body
+            const apartament = await Apartament.update({title, apartamentTypeId, price, districtId}, {where: {id}})
+            try{
+                if(!!info){
+                    info = JSON.parse(info)
+                    info.forEach(i => {
+                        ApartamentInfo.update({
+                            description: i.description,
+                        }, {where: {apartamentId: id, title: title.i}})
                     });
                 }
             }catch(e){

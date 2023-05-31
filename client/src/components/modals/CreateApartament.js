@@ -1,25 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Dropdown, Form, Modal, Row } from "react-bootstrap";
 import { Context } from "../..";
-import { createApartament, fetchDistricts, fetchTypes } from "../../http/apartamentApi";
+import { createApartament, fetchDistricts, fetchOneDistrict, fetchOneTypes, fetchTypes, updateApartament } from "../../http/apartamentApi";
 
-const CreateApartament = ({show, onHide}) => {
-    const {apartaments} = useContext(Context)
+const CreateApartament = ({show, onHide, update, apartament}) => {
+    const {apartaments, user} = useContext(Context)
     const [stateType, setStateType] = useState({})
     const [stateDistrict, setStateDistrict] = useState({})
-    const [name, setName] = useState('')
-    const [floor, setFloor] = useState('')
-    const [corpus, setCorpus] = useState('')
-    const [date, setDate] = useState('')
-    const [ploshad, setPloshad] = useState('')
-    const [potolok, setPotolok] = useState('')
-    const [propiska, setPropiska] = useState('')
-    const [price, setPrice] = useState('')
+    const [name, setName] = useState(apartament.title || '')
+    const [floor, setFloor] = useState(apartament.info[0].description || '')
+    const [corpus, setCorpus] = useState(apartament.info[1].description || '')
+    const [date, setDate] = useState(apartament.info[2].description || '')
+    const [ploshad, setPloshad] = useState(apartament.info[3].description || '')
+    const [potolok, setPotolok] = useState(apartament.info[4].description || '')
+    const [propiska, setPropiska] = useState(apartament.info[5].description || '')
+    const [price, setPrice] = useState(apartament.price || '')
     const [file, setFile] = useState([])
-    
+    const [isUpdate, setIsUpdate] = useState(update)
+
     useEffect(() => {
+      if(update){
+        fetchOneTypes(apartament.apartamentTypeId).then(data=>setStateType(data))
+        fetchOneDistrict(apartament.districtId).then(data=>setStateDistrict(data))
+      }
       fetchTypes().then(data => apartaments.setTypes(data))
-      fetchDistricts().then(data => apartaments.setDistrict(data))
+      fetchDistricts().then(data => apartaments.setDistrict(data.rows))
     }, [])
 
     const selectFile = e => {
@@ -28,7 +33,6 @@ const CreateApartament = ({show, onHide}) => {
 
     const addApartament = () => {
       if(stateType && stateDistrict && name && floor && corpus && date && ploshad && potolok && propiska && price && file){
-        console.log(stateDistrict.id, file)
         let info = [];
         let getDate = new Date(date)
         let getMonth = getDate.toLocaleString('default', {month: 'long'})
@@ -69,6 +73,49 @@ const CreateApartament = ({show, onHide}) => {
       }
       }
 
+      const updateApartament = () => {
+        if(stateType && stateDistrict && name && floor && corpus && date && ploshad && potolok && propiska && price && file){
+          let info = [];
+          let getDate = new Date(date)
+          let getMonth = getDate.toLocaleString('default', {month: 'long'})
+          if(getMonth == 'март' || getMonth == 'август'){
+            getMonth = getMonth + 'a'
+          } else {
+            getMonth = getMonth.slice(0, -1) + 'я'
+          }
+          info.push(
+            {title: 'Этаж', description: floor}, 
+            {title: 'Корпус', description: corpus}, 
+            {title: 'Дата', description: `до ${getDate.getDay()} ${getMonth} ${getDate.getFullYear()}`}, 
+            {title: 'Площадь', description: ploshad}, 
+            {title: 'Потолок', description: potolok}, 
+            {title: 'Прописка', description: propiska}, 
+            )
+          const formData = new FormData()
+          formData.append('id', `${apartament.id}`)
+          formData.append('title', name)
+          formData.append('price', `${price}`)
+          formData.append('apartamentTypeId',`${ stateType.id}`)
+          formData.append('districtId', `${stateDistrict.id}`)
+          formData.append('info', JSON.stringify(info))
+          updateApartament(formData).then(data => onHide())
+          setStateType('')
+          setStateDistrict('')
+          setFloor('')
+          setName('')
+          setDate('')
+          setCorpus('')
+          setPotolok('')
+          setPloshad('')
+          setPropiska('')
+          setPrice('')
+          setFile([])
+        } else {
+          alert("Необходимо заполнить все поля")
+        }
+        }
+
+    
     return(
       <Modal
       show={show}
@@ -170,16 +217,28 @@ const CreateApartament = ({show, onHide}) => {
             value={price}
             onChange={e=>setPrice(e.target.value)}
           />
-          <Form.Control 
-            className='mt-3'
-            type='file'
-            onChange={selectFile}
-          />
+          { user.isAuth ?
+                user.user.role === "ADMIN" ?
+                  <span></span>
+                  :
+                  <Form.Control 
+                    className='mt-3'
+                    type='file'
+                    onChange={selectFile}
+                  />
+              :
+              <span></span>
+
+          }
       </Form>
     </Modal.Body>
     <Modal.Footer>
       <Button variant='outline-danger' onClick={onHide}>Закрыть</Button>
-      <Button variant='outline-success' onClick={addApartament}>Добавить</Button>
+      { isUpdate ?
+        <Button variant='outline-success' onClick={updateApartament}>Сохранить</Button>
+        :
+        <Button variant='outline-success' onClick={addApartament}>Добавить</Button>
+      }
     </Modal.Footer>
   </Modal>
     )

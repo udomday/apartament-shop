@@ -13,7 +13,7 @@ const Admin = () => {
             <Button onClick={()=>setTypeVisible(true)} variant='outline-dark' className='mt-3'>Добавить тип</Button>
             <Button onClick={()=>setDistrictVisible(true)} variant='outline-dark' className='mt-3'>Добавить район</Button>
             <Button onClick={()=>setApartamentVisible(true)} variant='outline-dark' className='mt-3'>Добавить квартиру</Button>
-            <CreateApartament show={apartamentVisible} onHide={()=>setApartamentVisible(false)}/>
+            <CreateApartament show={apartamentVisible} onHide={()=>setApartamentVisible(false)} update={false}/>
             <CreateDistrict show={districtVisible} onHide={()=>setDistrictVisible(false)}/>
             <CreateType show={typeVisible} onHide={()=>setTypeVisible(false)}/>
         </Container>

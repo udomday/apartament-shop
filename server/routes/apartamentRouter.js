@@ -4,6 +4,7 @@ const apartamentController = require('../controllers/apartamentController');
 const checkRole = require('../middleware/checkMiddleware')
 
 router.post('/', checkRole("ADMIN"), apartamentController.create)
+router.put('/', checkRole("ADMIN"), apartamentController.update)
 router.get('/', apartamentController.getAll)
 router.get('/:id', apartamentController.getOne)
 

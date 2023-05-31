@@ -5,11 +5,13 @@ import { useParams } from 'react-router-dom';
 import { fetchOneApartament } from '../../http/apartamentApi';
 import { createPurchaseOrder, getOnePurchaseOrder, getPassport } from '../../http/userApi';
 import { Context } from '../..';
+import CreateApartament from '../modals/CreateApartament';
 
 const ApartamnetPageItem = observer(() => {
     const {id} = useParams()
     const {user} = useContext(Context)
     const [apartament, setApartament] = useState()
+    const [apartamentVisible, setApartamentVisible] = useState(false)
     useEffect(()=>{
         fetchOneApartament(id).then(data => setApartament(data))
     },[])
@@ -17,7 +19,6 @@ const ApartamnetPageItem = observer(() => {
     const addApartamentOrder = () => {
         if(user.isAuth){
             getOnePurchaseOrder(user.user.id, id).then(data => {
-                console.log(data)
                 if(data){
                     alert('Вы уже создали заявку на покупку этой квартиры')
                 } else {
@@ -47,7 +48,14 @@ const ApartamnetPageItem = observer(() => {
                             <div style={{margin:'0 0 20px 0', fontSize:'14px', lineHeight: '16px', color: 'rgb(185, 185, 185)'}}>{Math.round(apartament.price / parseFloat(apartament.info.find(info => info.title === 'Площадь').description)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₽ за м²</div>
                         </div>
                         <Button onClick={addApartamentOrder} style={{ width: '100%', float: 'center', borderColor: 'rgb(255, 65, 20)', backgroundColor: 'rgb(255, 65, 20)', color: "#fff"}}>Купить</Button>
-                        {/* <Button style={{marginTop: '20px', width: '100%', float: 'center', borderColor: 'rgb(91, 91, 91)', backgroundColor: 'rgb(91, 91, 91)', color: "#fff"}}>Написать консультанту</Button> */}
+                        { user.isAuth ?
+                            user.user.role === "ADMIN" ?
+                                <Button onClick={()=>setApartamentVisible(true)} style={{marginTop: '20px', width: '100%', float: 'center', borderColor: 'rgb(91, 91, 91)', backgroundColor: 'rgb(91, 91, 91)', color: "#fff"}}>Редактировать</Button>
+                                :
+                                <span></span>
+                            :
+                            <span></span>
+                        }
                     </div>
                     <div className='p-2'>
                         {apartament.info.map((info => 
@@ -58,6 +66,7 @@ const ApartamnetPageItem = observer(() => {
                         ))}
                     </div>
                 </Card>
+                <CreateApartament show={apartamentVisible} onHide={()=>setApartamentVisible(false)} update={true} apartament={apartament}/>
             </div>
         )
     }
